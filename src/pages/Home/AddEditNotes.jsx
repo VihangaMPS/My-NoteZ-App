@@ -6,7 +6,7 @@ const AddEditNotes = () => {
 
                 <input
                     type="text"
-                    placeholder="Goto Gym"
+                    placeholder="Go to Gym"
                     className="text-2xl text-slate-950 outline-none"
                 />
             </div>
