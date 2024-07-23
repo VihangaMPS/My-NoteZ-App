@@ -91,7 +91,7 @@ const Home = () => {
 
             if (response.data && response.data.status ) {
                 showToastMessage("Note Deleted Successfully", 'delete');
-                getAllNotes();
+                await getAllNotes();
             }
         } catch (error) {
             if (error.message && error.message.data && error.message.data.message) {
@@ -110,6 +110,24 @@ const Home = () => {
             if (response.data && response.data.data) {
                 setIsSearch(true);
                 setAllNotes(response.data.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const updateIsPinned = async (noteData ) => {
+        const nodeId = noteData._id;
+
+        try {
+            const response = await axiosNoteInstance.patch(`/${nodeId}`, {
+                "isPinned" : !nodeId.isPinned
+            });
+
+            if (response.data && response.data.data) {
+                console.log("in if")
+                showToastMessage("Note Updated Successfully")
+                await getAllNotes();
             }
         } catch (error) {
             console.log(error)
@@ -137,7 +155,7 @@ const Home = () => {
                             isPinned={item.isPinned}
                             onEdit={() => handleEdit(item)}
                             onDelete={() => deleteNote(item)}
-                            onPinNote={() => {}}
+                            onPinNote={() => updateIsPinned(item)}
                         />
                     ))}
                 </div> : <EmptyCard imgSRC={isSearch ? noDataImage : AddImage}
