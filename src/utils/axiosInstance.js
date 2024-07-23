@@ -25,7 +25,7 @@ axiosUserInstance.interceptors.request.use((config) => {
 // ===================================================================
 
 export const axiosNoteInstance = axios.create({
-    baseURL: `${BASE_URL}api/note`,
+    baseURL: `${BASE_URL}api/notes`,
     timeout: 10000,
     headers: {
         "Content-type": "application/json"
