@@ -39,14 +39,8 @@ const Home = () => {
     const getAllNotes = async () => {
         try {
             const response = await axiosNoteInstance.get('/');
-            // console.log("response",response);
-            // console.log("response.data", response.data);
-            // console.log("response.data.data", response.data.data);
-            // console.log("response.data.notes",response.data.notes);
-            // console.log("response.data.data.notes",response.data.data.notes);
 
             if (response.data.data) {
-                console.log("in if")
                 setAllNotes(response.data.data);
             }
         } catch (error) {
@@ -106,6 +100,7 @@ const Home = () => {
                     onClose={() => {setOpenAddEditModal({isShown: false, type: "add", data: null})}}
                     type={openAddEditModal.type}
                     noteData={openAddEditModal.data}
+                    getAllNotes={getAllNotes}
                 />
             </Modal>
         </>

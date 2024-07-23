@@ -1,8 +1,9 @@
 import TagInput from "../../components/Input/TagInput.jsx";
 import {useState} from "react";
 import {MdClose} from "react-icons/md";
+import {axiosNoteInstance} from "../../utils/axiosInstance.js";
 
-const AddEditNotes = ({onClose, type, noteData}) => {
+const AddEditNotes = ({onClose, type, noteData, getAllNotes}) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -12,7 +13,22 @@ const AddEditNotes = ({onClose, type, noteData}) => {
 
     // Add Note
     const addNewNote = async () => {
+        try {
+            const response = await axiosNoteInstance.post("/", {
+                title,
+                content,
+                tags
+            });
 
+            if (response.data && response.data.data) {
+                getAllNotes();
+                onClose();
+            }
+        } catch (error) {
+            if (error.message && error.message.data && error.message.data.message) {
+                setError(error.response.data.message);
+            }
+        }
     }
 
     // Edit Note
@@ -49,7 +65,7 @@ const AddEditNotes = ({onClose, type, noteData}) => {
 
                 <input
                     type="text"
-                    placeholder="Go to Gym"
+                    placeholder="Add a Title"
                     className="text-2xl text-slate-950 outline-none"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -59,7 +75,7 @@ const AddEditNotes = ({onClose, type, noteData}) => {
             <div className="flex flex-col gap-2 mt-4">
                 <label className="input-label">CONTENT</label>
                 <textarea
-                    placeholder="Content"
+                    placeholder="Add a Content"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     rows={10}
                     value={content}
