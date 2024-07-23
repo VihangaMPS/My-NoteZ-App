@@ -21,7 +21,7 @@ const AddEditNotes = ({onClose, type, noteData, getAllNotes, showToastMessage}) 
             });
 
             if (response.data && response.data.data) {
-                showToastMessage("Node Added Successfully")
+                showToastMessage("Note Added Successfully")
                 getAllNotes();
                 onClose();
             }
@@ -44,7 +44,7 @@ const AddEditNotes = ({onClose, type, noteData, getAllNotes, showToastMessage}) 
             });
 
             if (response.data && response.data.data) {
-                showToastMessage("Node Updated Successfully")
+                showToastMessage("Note Updated Successfully")
                 getAllNotes();
                 onClose();
             }
