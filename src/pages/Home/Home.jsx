@@ -5,7 +5,7 @@ import AddEditNotes from "./AddEditNotes.jsx";
 import {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {useNavigate} from "react-router-dom";
-import {axiosInstance} from "../../utils/axiosInstance.js";
+import {axiosNoteInstance, axiosUserInstance} from "../../utils/axiosInstance.js";
 
 const Home = () => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -21,7 +21,7 @@ const Home = () => {
     // Get User Info
     const getUserInfo = async () => {
         try {
-            const response = await axiosInstance.get("/");
+            const response = await axiosUserInstance.get("/");
 
             if (response.data && response.data.user) {
                 setUserInfo(response.data.user);
@@ -33,6 +33,14 @@ const Home = () => {
             }
         }
     }
+
+    // Get All Notes
+    const getAllNotes = async () => {
+        try {
+            const response = await axiosNoteInstance.get()
+        }
+    }
+
 
     useEffect(() => {
         getUserInfo();
