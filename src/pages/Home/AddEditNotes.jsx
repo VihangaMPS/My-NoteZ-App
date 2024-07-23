@@ -3,7 +3,7 @@ import {useState} from "react";
 import {MdClose} from "react-icons/md";
 import {axiosNoteInstance} from "../../utils/axiosInstance.js";
 
-const AddEditNotes = ({onClose, type, noteData, getAllNotes}) => {
+const AddEditNotes = ({onClose, type, noteData, getAllNotes, showToastMessage}) => {
 
     const [title, setTitle] = useState( noteData?.title || "");
     const [content, setContent] = useState( noteData?.content || "");
@@ -21,6 +21,7 @@ const AddEditNotes = ({onClose, type, noteData, getAllNotes}) => {
             });
 
             if (response.data && response.data.data) {
+                showToastMessage("Node Added Successfully")
                 getAllNotes();
                 onClose();
             }
@@ -43,6 +44,7 @@ const AddEditNotes = ({onClose, type, noteData, getAllNotes}) => {
             });
 
             if (response.data && response.data.data) {
+                showToastMessage("Node Updated Successfully")
                 getAllNotes();
                 onClose();
             }
