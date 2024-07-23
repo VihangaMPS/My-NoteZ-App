@@ -7,6 +7,9 @@ import Modal from "react-modal";
 import {useNavigate} from "react-router-dom";
 import {axiosNoteInstance, axiosUserInstance} from "../../utils/axiosInstance.js";
 import Toast from "../../components/ToastMessage/Toast.jsx";
+import EmptyCard from "../../components/Cards/EmptyCard.jsx";
+import AddImage from "../../../public/assets/lists.png"
+import noDataImage from "../../../public/assets/document.png"
 
 const Home = () => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -15,7 +18,8 @@ const Home = () => {
         data: null
     });
     const [userInfo, setUserInfo] = useState(null);
-    const [allNotes, setAllNotes] = useState([])
+    const [allNotes, setAllNotes] = useState([]);
+    const [isSearch, setIsSearch] = useState(false);
     const [showToastMsg, setShowToastMsg] = useState({
         isShown: false,
         message: "",
@@ -43,7 +47,10 @@ const Home = () => {
             message: ""
         })
     }
-
+    const handleClearSearch = () => {
+        setIsSearch(false);
+        getAllNotes();
+    }
 
 
     // Get User Info
@@ -93,6 +100,22 @@ const Home = () => {
         }
     }
 
+    // Search Note
+    const onSearchNote = async (query) => {
+        try {
+            const response = await axiosNoteInstance.get("/searchNote", {
+                params: {query}
+            });
+
+            if (response.data && response.data.data) {
+                setIsSearch(true);
+                setAllNotes(response.data.data);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getAllNotes();
         getUserInfo();
@@ -100,10 +123,10 @@ const Home = () => {
 
     return (
         <>
-            <Navbar userInfo={userInfo}/>
+            <Navbar userInfo={userInfo} onSearchNote={onSearchNote} handleClearSearch={handleClearSearch}/>
 
             <div className="container mx-auto">
-                <div className="grid grid-cols-3 gap-4 mt-8">
+                {allNotes.length > 0 ? <div className="grid grid-cols-3 gap-4 mt-8">
                     {allNotes.map((item, index) => (
                         <NoteCard
                             key={item._id}
@@ -114,11 +137,11 @@ const Home = () => {
                             isPinned={item.isPinned}
                             onEdit={() => handleEdit(item)}
                             onDelete={() => deleteNote(item)}
-                            onPinNote={() => {
-                            }}
+                            onPinNote={() => {}}
                         />
                     ))}
-                </div>
+                </div> : <EmptyCard imgSRC={isSearch ? noDataImage : AddImage}
+                                    message={isSearch ? `Oops ! No notes found matching your search` : `Start creating your first note! Click the 'Add' button to get down your thoughts, ideas and reminders. Let's get started !`}/>}
             </div>
 
             <button
