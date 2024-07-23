@@ -24,7 +24,7 @@ const Login = () => {
         }
         setError(""); // if email correct warning message hidden
 
-        // API Call
+        // Login API Call
         try {
             const response = await axiosInstance.post("/login", {
                 email: email,
